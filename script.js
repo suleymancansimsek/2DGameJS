@@ -113,6 +113,8 @@ window.addEventListener('load', function(){
             this.x = this.game.width;
             this.speedX= Math.random() * -1.5 -0.5;
             this.markedForDeletion = false;
+            this.lives = 5;
+            this.score = this.lives;
         }
 
         update(){
@@ -125,6 +127,9 @@ window.addEventListener('load', function(){
         draw(context){
             context.fillStyle = 'red';
             context.fillRect(this.x, this.y, this.width, this.height);
+            context.fillStyle = 'black';
+            context.font = '20px Helvetica';
+            context.fillText(this.lives, this.x, this.y);
         }
         
     }
@@ -132,8 +137,8 @@ window.addEventListener('load', function(){
     class Angler1 extends Enemy {
         constructor(game){
             super(game);
-            this.width = 228;
-            this.height = 169;
+            this.width = 228 ;
+            this.height = 169 ;
             this.y = Math.random() * (this.game.height * 0.9 - this.height);
 
         }
@@ -194,6 +199,19 @@ window.addEventListener('load', function(){
             }
             this.enemies.forEach(enemy => {
                 enemy.update();
+                if (this.checkCollisions(this.player, enemy)) {
+                    enemy.markedForDeletion = true;
+                }
+                this.player.projectiles.forEach(projectile => {
+                    if(this.checkCollisions(projectile, enemy)){
+                        enemy.lives--;
+                        projectile.markedForDeletion = true;
+                        if (enemy.lives <= 0) {
+                            enemy.markedForDeletion = true;
+                            this.score += enemy.score;
+                        }
+                    }
+                });
             });
             this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
             if(this.enemyTimer > this.enemyInterval && !this.gameOver){
@@ -214,6 +232,16 @@ window.addEventListener('load', function(){
 
         addEnemy(){
             this.enemies.push( new Angler1(this));
+            console.log(this.enemies);
+        }
+
+        checkCollisions(rect1, rect2){
+            return ( rect1.x < rect2.x + rect2.width &&
+                     rect1.x + rect1.width > rect2.x &&
+                     rect1.y < rect2.y + rect2.height &&
+                     rect1.y + rect1.height > rect2.y )
+
+            
         }
     }
     const game = new Game(canvas.width, canvas.height);
