@@ -23,14 +23,14 @@ window.addEventListener('load', function(){
                     
                      this.game.player.shootTop();
                 } 
-                console.log(this.game.keys);
+                //console.log(this.game.keys);
             });
 
             window.addEventListener('keyup', e =>{
                 if(this.game.keys.indexOf(e.key) > -1){
                     this.game.keys.splice(this.game.keys.indexOf(e.key), 1);
                 }
-                console.log(this.game.keys);
+                //console.log(this.game.keys);
             });
 
             
@@ -98,8 +98,12 @@ window.addEventListener('load', function(){
         }
 
         shootTop() {
-            this.projectiles.push(new Projectile(this.game, this.x, this.y));
-            console.log(this.projectiles);
+            if (this.game.ammo > 0) {
+                this.projectiles.push(new Projectile(this.game, this.x + 80, this.y + 30));
+                console.log(this.projectiles);
+                this.game.ammo--;
+            }
+            
         }
     }
 
@@ -126,10 +130,21 @@ window.addEventListener('load', function(){
             this.player = new Player(this);
             this.input = new InputHandler(this);
             this.keys = [];
+            this.ammo = 20;
+            this.maxAmmo = 50;
+            this.ammoTimer = 0;
+            this.ammoInterval = 500;
         }
 
-        update(){
+        update(deltaTime){
             this.player.update();
+            if (this.ammoTimer > this.ammoInterval) {
+                if (this.ammo < this.maxAmmo) this.ammo++;
+                this.ammoTimer = 0; 
+                    
+            } else {
+                this.ammoTimer += deltaTime;
+            }
         }
 
         draw(context){
@@ -137,14 +152,17 @@ window.addEventListener('load', function(){
         }
     }
     const game = new Game(canvas.width, canvas.height);
+    let lastTime = 0;
 
     //animation loop
-    function animate(params) {
+    function animate(timeStamp) {
+        const deltaTime = timeStamp - lastTime;
+        lastTime = timeStamp;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        game.update();
+        game.update(deltaTime);
         game.draw(ctx);
         requestAnimationFrame(animate);
     }
 
-    animate();
+    animate(0);
 });
