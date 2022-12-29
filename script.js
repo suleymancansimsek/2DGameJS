@@ -18,6 +18,7 @@ window.addEventListener('load', function(){
                 
                 ) && this.game.keys.indexOf(e.key) === -1){
                     this.game.keys.push(e.key);
+                    //console.log(e.key);
                 } else if (e.key === ' '){
                     //console.log(this.game.Player);
                     
@@ -78,7 +79,12 @@ window.addEventListener('load', function(){
         }
 
         update(){
-            if (this.game.keys.includes('ArrowUp')) this.speedY = -this.maxSpeed;
+            
+            if (this.game.keys.includes('ArrowUp')){
+                
+                this.speedY = -this.maxSpeed;
+            
+            } 
             else if (this.game.keys.includes('ArrowDown')) this.speedY = this.maxSpeed;
             else this.speedY = 0;
             this.y += this.speedY;
@@ -100,7 +106,7 @@ window.addEventListener('load', function(){
         shootTop() {
             if (this.game.ammo > 0) {
                 this.projectiles.push(new Projectile(this.game, this.x + 80, this.y + 30));
-                console.log(this.projectiles);
+                //console.log(this.projectiles);
                 this.game.ammo--;
             }
             
@@ -174,6 +180,9 @@ window.addEventListener('load', function(){
             for (let i = 0; i < this.game.ammo; i++) {
                 context.fillRect(20 + 5 * i, 50, 3, 20);
             }
+            //Timer
+            const formattedTime = (this.game.gameTime * 0.001).toFixed(1);
+            context.fillText('Timer: ' + formattedTime, 20, 100);
             //game over message
             if (this.game.gameOver) {
                 context.textAlign = 'center';
@@ -213,9 +222,14 @@ window.addEventListener('load', function(){
             this.gameOver = false;
             this.score = 0;
             this.winningScore = 10;
+            this.gameTime = 0;
+            this.timeLimit = 5000;
         }
 
         update(deltaTime){
+            
+            if(!this.gameOver) this.gameTime += deltaTime;
+            if(this.gameTime > this.timeLimit) this.gameOver = true;
             this.player.update();
             if (this.ammoTimer > this.ammoInterval) {
                 if (this.ammo < this.maxAmmo) this.ammo++;
@@ -235,7 +249,7 @@ window.addEventListener('load', function(){
                         projectile.markedForDeletion = true;
                         if (enemy.lives <= 0) {
                             enemy.markedForDeletion = true;
-                            this.score += enemy.score;
+                            if(!this.gameOver) this.score += enemy.score;
                             if (this.score > this.winningScore) {
                                 this.gameOver = true;
                             }
@@ -262,7 +276,7 @@ window.addEventListener('load', function(){
 
         addEnemy(){
             this.enemies.push( new Angler1(this));
-            console.log(this.enemies);
+            //console.log(this.enemies);
         }
 
         checkCollisions(rect1, rect2){
