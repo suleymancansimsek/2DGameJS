@@ -365,15 +365,20 @@ window.addEventListener('load', function(){
     class Explosion{
         constructor(game, x, y){
             this.game = game;
-            this.x = x;
-            this.y = y;
+//            this.x = x;
+//            this.y = y;
             this.frameX = 0;
-            this.spriteHeight = 200;
             this.fps = 25;
             this.timer = 0;
             this.interval = 1000/this.fps;
             this.markedForDeletion = false;
             this.maxFrame = 8;
+            this.spriteWidth = 200;
+            this.spriteHeight = 200;
+            this.width = this.spriteWidth;
+            this.height = this.spriteHeight;
+            this.x = x - this.width * 0.5;
+            this.y = y - this.height * 0.5;
         }
 
         update(deltaTime){
@@ -399,16 +404,15 @@ window.addEventListener('load', function(){
         constructor(game, x, y){
             super(game, x, y);
             this.image = document.getElementById('smokeExplosion');
-            this.spriteWidth = 200;
-            this.width = this.spriteWidth;
-            this.height = this.spriteHeight;
-            this.x = x - this.width * 0.5;
-            this.y = y - this.height * 0.5;
+
         }
     }
 
     class FireExplosion extends Explosion{
-
+        constructor(game, x, y){
+            super(game, x, y);
+            this.image = document.getElementById('fireExplosion');
+        }
     }
 
 
@@ -584,8 +588,10 @@ window.addEventListener('load', function(){
 
         addExplosion(enemy){
             const randomize = Math.random();
-            if (randomize < 1) {
+            if (randomize < 0.5) {
                 this.explosions.push(new SmokeExplosion(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
+            }else{
+                this.explosions.push(new FireExplosion(this, enemy.x + enemy.width * 0.5, enemy.y + enemy.height * 0.5));
             }
         }
 
@@ -594,8 +600,6 @@ window.addEventListener('load', function(){
                      rect1.x + rect1.width > rect2.x &&
                      rect1.y < rect2.y + rect2.height &&
                      rect1.y + rect1.height > rect2.y )
-
-            
         }
     }
     const game = new Game(canvas.width, canvas.height);
