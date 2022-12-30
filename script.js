@@ -26,17 +26,13 @@ window.addEventListener('load', function(){
                 } else if(e.key === 'd'){
                     this.game.debug = !this.game.debug;
                 }
-                //console.log(this.game.keys);
             });
 
             window.addEventListener('keyup', e =>{
                 if(this.game.keys.indexOf(e.key) > -1){
                     this.game.keys.splice(this.game.keys.indexOf(e.key), 1);
                 }
-                //console.log(this.game.keys);
             });
-
-            
         }
     }
 
@@ -128,10 +124,8 @@ window.addEventListener('load', function(){
 
         update(deltaTime){
             
-            if (this.game.keys.includes('ArrowUp')){
-                
+            if (this.game.keys.includes('ArrowUp')){            
                 this.speedY = -this.maxSpeed;
-            
             } 
             else if (this.game.keys.includes('ArrowDown')) this.speedY = this.maxSpeed;
             else this.speedY = 0;
@@ -168,7 +162,7 @@ window.addEventListener('load', function(){
         }
 
         draw(context) {
-            //context.fillStyle = 'black';
+
             if(this.game.debug){
                 context.strokeRect(this.x, this.y, this.width, this.height);
             }
@@ -182,7 +176,6 @@ window.addEventListener('load', function(){
         shootTop() {
             if (this.game.ammo > 0) {
                 this.projectiles.push(new Projectile(this.game, this.x + 80, this.y + 30));
-                //console.log(this.projectiles);
                 this.game.ammo--;
             }
             if (this.powerUp) {
@@ -192,7 +185,6 @@ window.addEventListener('load', function(){
         shootBottom() {
             if (this.game.ammo > 0) {
                 this.projectiles.push(new Projectile(this.game, this.x + 80, this.y + 175));
-                //console.log(this.projectiles);
             }
         }
 
@@ -236,7 +228,6 @@ window.addEventListener('load', function(){
                 context.font = '20px Helvetica';
                 context.fillText(this.lives, this.x, this.y);
             }
-
         }
         
     }
@@ -254,7 +245,6 @@ window.addEventListener('load', function(){
         }
     }
 
-    
     class Angler2 extends Enemy {
         constructor(game){
             super(game);
@@ -365,8 +355,6 @@ window.addEventListener('load', function(){
     class Explosion{
         constructor(game, x, y){
             this.game = game;
-//            this.x = x;
-//            this.y = y;
             this.frameX = 0;
             this.fps = 25;
             this.timer = 0;
@@ -404,7 +392,6 @@ window.addEventListener('load', function(){
         constructor(game, x, y){
             super(game, x, y);
             this.image = document.getElementById('smokeExplosion');
-
         }
     }
 
@@ -414,7 +401,6 @@ window.addEventListener('load', function(){
             this.image = document.getElementById('fireExplosion');
         }
     }
-
 
     class UI{
         constructor(game){
@@ -458,7 +444,6 @@ window.addEventListener('load', function(){
             if (this.game.player.powerUp) {
                  context.fillStyle = '#ffffbd';
             }
-            //context.fillStyle = this.color;
             for (let i = 0; i < this.game.ammo; i++) {
                  context.fillRect(20 + 5 * i, 50, 3, 20);
            }
@@ -581,9 +566,6 @@ window.addEventListener('load', function(){
             }else{
                 this.enemies.push(new LuckyFish(this));
             }
-            
-           
-            //console.log(this.enemies);
         }
 
         addExplosion(enemy){
