@@ -97,6 +97,12 @@ window.addEventListener('load', function(){
             else if (this.game.keys.includes('ArrowDown')) this.speedY = this.maxSpeed;
             else this.speedY = 0;
             this.y += this.speedY;
+            //vertical boundaries
+            if (this.y > this.game.height - this.height * 0.5) {
+                this.y = this.game.height - this.height * 0.5;
+            }else if(this.y < -this.height * 0.5){
+                this.y = -this.height * 0.5;
+            }
             // handle projectiles
             this.projectiles.forEach(projectile => {
                 projectile.update();
@@ -185,8 +191,11 @@ window.addEventListener('load', function(){
             
             if(this.game.debug) context.strokeRect(this.x, this.y, this.width, this.height);
             context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
-            context.font = '20px Helvetica';
-            context.fillText(this.lives, this.x, this.y);
+            if(this.game.debug){
+                context.font = '20px Helvetica';
+                context.fillText(this.lives, this.x, this.y);
+            }
+
         }
         
     }
