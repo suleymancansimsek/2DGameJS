@@ -284,7 +284,7 @@ window.addEventListener('load', function(){
         constructor(game){
             this.game = game;
             this.fontSize = 25;
-            this.fontFamily = 'Helvetice';
+            this.fontFamily = 'Bangers';
             this.color = 'white';
         }
 
@@ -307,16 +307,16 @@ window.addEventListener('load', function(){
                 let message1;
                 let message2;
                 if (this.game.score > this.game.winningScore) {
-                    message1 = 'You Win !';
-                    message2 = 'Well done!';
+                    message1 = 'Most Wondrous !';
+                    message2 = 'Well done explorer!';
                 }else{
-                    message1 = 'You lose!';
-                    message2 = 'Try again next time!';
+                    message1 = 'Blazes!';
+                    message2 = 'Get my repair kit and try again!';
                 }
-                context.font = '50px' + this.fontFamily;
-                context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 40);
-                context.font = '25px' + this.fontFamily;
-                context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 40);
+                context.font = '80px ' + this.fontFamily;
+                context.fillText(message1, this.game.width * 0.5, this.game.height * 0.5 - 20);
+                context.font = '30px ' + this.fontFamily;
+                context.fillText(message2, this.game.width * 0.5, this.game.height * 0.5 + 20);
             }
              //ammo
             if (this.game.player.powerUp) {
