@@ -133,9 +133,7 @@ window.addEventListener('load', function(){
             this.game = game;
             this.x = this.game.width;
             this.speedX= Math.random() * -1.5 -0.5;
-            this.markedForDeletion = false;
-            this.lives = 5;
-            this.score = this.lives;
+            this.markedForDeletion = false;      
             this.frameX = 0;
             this.frameY = 0;
             this.maxFrame = 37;
@@ -156,7 +154,7 @@ window.addEventListener('load', function(){
         draw(context){
             
             if(this.game.debug) context.strokeRect(this.x, this.y, this.width, this.height);
-            context.drawImage(this.image, this.frameX * this.width, this.frameY * this.frameY, this.width, this.height, this.x, this.y, this.width, this.height);
+            context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
             context.font = '20px Helvetica';
             context.fillText(this.lives, this.x, this.y);
         }
@@ -171,7 +169,22 @@ window.addEventListener('load', function(){
             this.y = Math.random() * (this.game.height * 0.9 - this.height);
             this.image = document.getElementById('angler1');
             this.frameY = Math.floor(Math.random() * 3);
+            this.lives = 2;
+            this.score = this.lives;
+        }
+    }
 
+    
+    class Angler2 extends Enemy {
+        constructor(game){
+            super(game);
+            this.width = 213 ;
+            this.height = 165 ;
+            this.y = Math.random() * (this.game.height * 0.9 - this.height);
+            this.image = document.getElementById('angler2');
+            this.frameY = Math.floor(Math.random() * 2);
+            this.lives = 3;
+            this.score = this.lives;
         }
     }
 
@@ -289,7 +302,7 @@ window.addEventListener('load', function(){
             this.score = 0;
             this.winningScore = 10;
             this.gameTime = 0;
-            this.timeLimit = 5000;
+            this.timeLimit = 15000;
             this.speed = 1;
             this.debug = true;
         }
@@ -347,7 +360,13 @@ window.addEventListener('load', function(){
         }
 
         addEnemy(){
-            this.enemies.push( new Angler1(this));
+            const randomize = Math.random();
+            if (randomize < 0.5) {
+                this.enemies.push(new Angler1(this))
+            }else{
+                this.enemies.push(new Angler2(this))
+            }
+           
             //console.log(this.enemies);
         }
 
